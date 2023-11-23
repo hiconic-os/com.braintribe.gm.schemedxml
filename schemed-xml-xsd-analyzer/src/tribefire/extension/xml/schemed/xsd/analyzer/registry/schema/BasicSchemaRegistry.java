@@ -12,7 +12,7 @@
 package tribefire.extension.xml.schemed.xsd.analyzer.registry.schema;
 
 
-import static com.braintribe.console.ConsoleOutputs.out;
+import static com.braintribe.console.ConsoleOutputs.println;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,30 +62,29 @@ import tribefire.extension.xml.schemed.xsd.api.analyzer.naming.QPathGenerator;
  *
  */
 public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
-	private static Logger log = Logger.getLogger(BasicSchemaRegistry.class);
 
-	private Map<QName, SimpleType> qnameToSimpleTypeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
-	private Map<QName, ComplexType> qnameToComplexTypeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
-	private Map<QName, Element> qnameToTopElementMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
-	private Map<QName, Group> qnameToGroupMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
-	private Map<QName, AttributeGroup> qnameToAttributeGroupMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
-	private Map<QName, Attribute> qnameToAttributeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, SimpleType> qnameToSimpleTypeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, ComplexType> qnameToComplexTypeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, Element> qnameToTopElementMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, Group> qnameToGroupMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, AttributeGroup> qnameToAttributeGroupMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
+	private final Map<QName, Attribute> qnameToAttributeMap = CodingMap.createHashMapBased( new QNameWrapperCodec());
 	
-	private Map<Element, GmType> elementToTypeMap = new HashMap<>();
+	private final Map<Element, GmType> elementToTypeMap = new HashMap<>();
 
 	private SchemaReferenceResolver schemaReferenceresolver;
 	private NamespaceGenerator namespaceGenerator;
-	private Map<String, SchemaRegistry> namespaceUriToRegistryMap = new HashMap<>();
-	private Map<String, SchemaRegistry> prefixToSchemaRegistryMap = new HashMap<>();
-	private Map<Schema, String> schemaToPrefixMap = new HashMap<>();
-	private Map<Schema, String> schemaToNamespaceUriMap = new HashMap<>();
+	private final Map<String, SchemaRegistry> namespaceUriToRegistryMap = new HashMap<>();
+	private final Map<String, SchemaRegistry> prefixToSchemaRegistryMap = new HashMap<>();
+	private final Map<Schema, String> schemaToPrefixMap = new HashMap<>();
+	private final Map<Schema, String> schemaToNamespaceUriMap = new HashMap<>();
 	
 	private NamespaceRegistry namespaceRegistry;
 	private Schema schema;
 	private SchemaRegistry parentSchemaRegistry;
 	private AnalyzerRegistry backingRegistry;
 	private QPathGenerator qpathGenerator;
-	private List<Schema> includedSchemata = new ArrayList<>();
+	private final List<Schema> includedSchemata = new ArrayList<>();
 	private boolean verbose = false;
 	
 	
@@ -200,7 +199,7 @@ public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
 			}
 			else {
 				if (verbose) {
-					out("already included [" + location + "]");
+					println("already included [" + location + "]");
 				}
 			}
 		}
@@ -233,7 +232,7 @@ public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
 			qnameToSimpleTypeMap.putIfAbsent( qName, entry);
 			//
 			if (verbose) {
-				out("simple : " + name);
+				println("simple : " + name);
 			}
 		}
 
@@ -538,7 +537,7 @@ public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
 	@Override
 	public Set<GmType> map( MappingContext mappingContext) {
 		if (verbose) {
-			out("mapping schema [" + schemaReferenceresolver.getUriOfSchema(getSchema()) + "]");
+			println("mapping schema [" + schemaReferenceresolver.getUriOfSchema(getSchema()) + "]");
 		}
 		
 		SchemaMappingContext sContext = new SchemaMappingContext( mappingContext);
@@ -549,17 +548,17 @@ public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
 					
 		Set<GmType> mappedTypes = new HashSet<>();
 		if (verbose) {
-			out( "** mapping top level elements **");
+			println( "** mapping top level elements **");
 		}
 		mapTopLevelElements( sContext);		
 		
 		if (verbose) {
-			out( "** mapping unmapped complex types **");
+			println( "** mapping unmapped complex types **");
 		}
 		mappedTypes.addAll(mapComplexTypes( sContext));
 		
 		if (verbose) {
-			out("** mapping unmapped simple types **");
+			println("** mapping unmapped simple types **");
 		}
 		mappedTypes.addAll(mapSimpleTypes( sContext));
 				
@@ -567,7 +566,7 @@ public class BasicSchemaRegistry implements SchemaRegistry, QPathGenerator {
 		for (SchemaRegistry registry : namespaceUriToRegistryMap.values()) {
 			sContext.registry = this;
 			if (verbose) {
-				out( "** mapping imported schema **");
+				println( "** mapping imported schema **");
 			}				
 			mappedTypes.addAll( registry.map( mappingContext));
 		}

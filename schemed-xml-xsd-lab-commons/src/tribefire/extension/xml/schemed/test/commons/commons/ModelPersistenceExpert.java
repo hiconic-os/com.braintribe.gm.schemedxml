@@ -20,39 +20,33 @@ import com.braintribe.codec.marshaller.api.GmSerializationOptions;
 import com.braintribe.codec.marshaller.api.OutputPrettiness;
 import com.braintribe.codec.marshaller.stax.StaxMarshaller;
 import com.braintribe.model.meta.GmMetaModel;
-import com.braintribe.model.processing.meta.ModelArtifactBuilder;
-import com.braintribe.model.processing.meta.ModelArtifactBuilderException;
+import com.braintribe.model.processing.meta.FsBasedModelArtifactBuilder;
 
 public class ModelPersistenceExpert {
 
-	private static ModelArtifactBuilder artifactBuilder = new ModelArtifactBuilder();
+	private static FsBasedModelArtifactBuilder artifactBuilder = new FsBasedModelArtifactBuilder();
 	private static StaxMarshaller marshaller = new StaxMarshaller();
 
 	public static File dumpModelJar(GmMetaModel model, File folder) {
-		try {
-			artifactBuilder.setModel(model);
-			artifactBuilder.setVersionFolder(folder);
-			artifactBuilder.publish();
+		artifactBuilder.setModel(model);
+		artifactBuilder.setVersionFolder(folder);
+		artifactBuilder.publish();
 
-			for (File file : folder.listFiles(new FilenameFilter() {
+		for (File file : folder.listFiles(new FilenameFilter() {
 
-				@Override
-				public boolean accept(File dir, String name) {
-					if (name.endsWith("sources.jar"))
-						return false;
-					if (!name.endsWith("jar"))
-						return false;
+			@Override
+			public boolean accept(File dir, String name) {
+				if (name.endsWith("sources.jar"))
+					return false;
+				if (!name.endsWith("jar"))
+					return false;
 
-					return true;
-				}
-			})) {
-				return file;
+				return true;
 			}
-			;
-
-		} catch (ModelArtifactBuilderException e) {
-			throw new IllegalStateException("cannot write model [" + model.getName() + "] as " + e);
+		})) {
+			return file;
 		}
+
 		return null;
 	}
 

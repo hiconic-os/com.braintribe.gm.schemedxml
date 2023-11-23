@@ -13,7 +13,7 @@ package tribefire.extension.xml.schemed.xsd.mapper;
 
 
 
-import static com.braintribe.console.ConsoleOutputs.out;
+import static com.braintribe.console.ConsoleOutputs.println;
 import static com.braintribe.console.ConsoleOutputs.yellow;
 
 import java.util.ArrayList;
@@ -617,12 +617,12 @@ public class BasicMapper implements HasCommonTokens, HasTokens, AnyProcessingTok
 		if (type != null) {
 			typeToGmTypeMap.put(type, entityType);
 			if (verbose) {
-				out("Mapping entity type [" + entityType.getTypeSignature() + "], type [" + type.getName() + "], name [" + typeName + "]");
+				println("Mapping entity type [" + entityType.getTypeSignature() + "], type [" + type.getName() + "], name [" + typeName + "]");
 			}			
 		}
 		else {
 			if (verbose) {
-				out( yellow("NOT Mapping entity type [" + entityType.getTypeSignature() + "], name [" + typeName + "] as no type is available"));
+				println( yellow("NOT Mapping entity type [" + entityType.getTypeSignature() + "], name [" + typeName + "] as no type is available"));
 			}
 		}
 		mappedTypes.add(entityType);
@@ -676,7 +676,7 @@ public class BasicMapper implements HasCommonTokens, HasTokens, AnyProcessingTok
 		entityType.setTypeSignature(newSignature);
 		typeToGmTypeMap.put(type, entityType);
 		if (verbose) {
-			out( yellow( "remapping [" + signature + "] to [" + newSignature + "], replacing internal map of [" + (type != null ? type.getName() : null) + "]"));
+			println( yellow( "remapping [" + signature + "] to [" + newSignature + "], replacing internal map of [" + (type != null ? type.getName() : null) + "]"));
 		}
 		return entityType;
 	}
@@ -715,12 +715,12 @@ public class BasicMapper implements HasCommonTokens, HasTokens, AnyProcessingTok
 		if (type != null) {
 			typeToGmTypeMap.put(type, enumType);
 			if (verbose) {
-				out("Mapping enum type [" + enumType.getTypeSignature() + "], type [" + type.getName() + "], name [" + typeName + "]");
+				println("Mapping enum type [" + enumType.getTypeSignature() + "], type [" + type.getName() + "], name [" + typeName + "]");
 			}
 		}
 		else {
 			if (verbose) {
-				out(yellow("NOT Mapping enum type [" + enumType.getTypeSignature() + "], name [" + typeName + "] as no type is available"));
+				println(yellow("NOT Mapping enum type [" + enumType.getTypeSignature() + "], name [" + typeName + "] as no type is available"));
 			}
 		}		
 		mappedTypes.add(enumType);
